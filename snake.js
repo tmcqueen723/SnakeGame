@@ -43,7 +43,7 @@ function makeSnake(){
 	for (var j=0; j<snake.length; j++){
 		world.addChild(snake.getAt(j));
 	}
-	go.setInterval(updateGame, 60);
+	go = setInterval(updateGame, 60);
 }
 
 function updateS(){
@@ -82,7 +82,7 @@ function updateGame(){
 	if (gInput.right && (sHead.direction != "left")){
 		sHead.direction = "right";
 	}
-	if (gInput.right && (sHead.direction != "up")){
+	if (gInput.down && (sHead.direction != "up")){
 		sHead.direction = "down";
 	}
 	sHead.prevX = sHead.x;
