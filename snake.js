@@ -3,13 +3,44 @@ initGame("canvas");
 
 //const variables that don't change;
 var tileSize = 16;
-var sHead = Textures.load("http://people.ucsc.edu/~tmcqueen/Sprites/sHead.png");
-var sBody = Textures.load("http://people.ucsc.edu/~tmcqueen/Sprites/sBody.png");
-var sTail = Textures.load("http://people.ucsc.edu/~tmcqueen/Sprites/sTail.png");
-var food = textures.load("http://people.ucsc.edu/~tmcqueen/Sprites/food.png");
-var cols = 10;
-var rows = 10;
-var tilesType = [];
+
+var sHead =  new Sprite();
+sHead.height = tileSize;
+sHead.width = tileSize;
+sHead.texture = Textures.load("http://people.ucsc.edu/~tmcqueen/Sprites/sHead.png");
+
+var sBody = new Sprite();
+sBody.height = tileSize;
+sBody.width = tileSize;
+sBody.texture = Textures.load("http://people.ucsc.edu/~tmcqueen/Sprites/sBody.png");
+
+var sTail = new Sprite();
+sTail.height = tileSize;
+sTail.width = tileSize;
+sTail.texture =  Textures.load("http://people.ucsc.edu/~tmcqueen/Sprites/sTail.png");
+
+var food = new Sprite();
+food.height = tileSize;
+food.width = tileSize;
+food.texture = Textures.load("http://people.ucsc.edu/~tmcqueen/Sprites/food.png");
+
+var Grid = new Sprite();
+Grid.heigth = tileSize;
+Grid.width = tileSize;
+Grid.texture = Textures.load("http://people.ucsc.edu/~tmcqueen/Sprites/Grid.png");
+
+function makeSnake(){
+	var startLength = 3;
+	var snake = new List();
+	snake.push(sTail);
+	snake.push(sBody);
+	snake.push(sHead);
+}
+
+var makeGrid = new CollisionGrid(x,y,wide,high,col,rows);
+
+world.addChild(makeGrid);
+/*var tilesType = [];
 tileType.push("http://people.ucsc.edu/~tmcqueen/Sprites/Grid.png");
 
 function Grid(texture){
@@ -41,4 +72,4 @@ Lvl.prototype = new Sprite();
 
 Lvl.prototype.update = function(d){
 	this.updateChildren(d);
-}
+}*/
