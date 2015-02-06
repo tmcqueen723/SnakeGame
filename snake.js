@@ -3,9 +3,13 @@ use2D = true;
 //const variables that don't change;
 var tileSize = 16;
 
-var sHead =  new Sprite();
+var sHead = new Sprite();
 sHead.height = tileSize;
 sHead.width = tileSize;
+sHead.x = 48;
+sHead.y = 0;
+sHead.PrevX = sHead.x;
+sHead.PrevY = sHead.y;
 sHead.texture = Textures.load("http://people.ucsc.edu/~tmcqueen/Sprites/sHead.png");
 
 var sBody = new Sprite();
@@ -31,25 +35,24 @@ Grid.texture = Textures.load("http://people.ucsc.edu/~tmcqueen/Sprites/Grid.png"
 function makeSnake(){
 	var startLength = 3;
 	var snake = new List();
+	world.addChild(sHead);
 	snake.push(sTail);
 	snake.push(sBody);
 	snake.push(sHead);
 }
 
-var makeGrid = new CollisionGrid(x,y,wide,high,col,rows);
 
-world.addChild(makeGrid);
-/*var tilesType = [];
+var tileType = [];
 tileType.push("http://people.ucsc.edu/~tmcqueen/Sprites/Grid.png");
 
-function Grid(texture){
+function Tile(texture){
 	this.texture = Textures.load(texture);
 	
 }
 
-//got this from the grid example with Brine
+/*//got this from the grid example with Brine
 //it should create the level
-function Lvl(cols,rows,tileSize){
+function Level(cols,rows,tileSize){
 	Sprite.call(this);
 	this.image = Textures.load(tileType[0]);
 	this.cols = cols;
@@ -62,13 +65,58 @@ function Lvl(cols,rows,tileSize){
 	for(var i = 0;i<cols;++i){
 		this.tiles[i] = [];
 		for(var j = 0;j<rows;++j){
-			this.tiles[i][j] = new Grid(tileTypes[0]);
+			this.tiles[i][j] = new Tile(tileType[0]);
 		}//second for loop
 	}//first for loop
+	    this.camera = new Camera(0, 0, tileSize, canvas.width, canvas.height, this);
 }
 
-Lvl.prototype = new Sprite();
+Level.prototype = new Sprite();
 
-Lvl.prototype.update = function(d){
+Level.prototype.update = function(d){
+	this.x = -this.camera.x;
+	this.y = -this.camera.y;
 	this.updateChildren(d);
-}*/
+}
+
+Level.prototype.draw = function(ctx){
+	Sprite.prototype.draw.call(this, ctx);
+	
+	var camera = this.camera,
+		minTileX = Math.max(0, Math.floor(camera.x/this.tileSize)),
+		minTileY = Math.max(0, Math.floor(camera.y/this.tileSize)),
+        maxTileX = Math.min(this.cols, Math.ceil((camera.x+camera.viewWidth)/this.tileSize)),
+		maxTileY = Math.min(this.rows, Math.ceil((camera.y+camera.viewHeight)/this.tileSize));
+		
+	var tile = this.tile;
+	for (var i = minTileX; i<maxTileX; i++){
+		for (var j = minTileY; j<maxTileY; j++){
+			tile.x = i*this.tileSize;
+			tile.y = j*this.tileSize;
+			tile.image = this.tiles[i][j].texture;
+			tile.width = this.tileSize;
+			tile.height = this.tileSize;
+			
+			tile.transform(ctx);
+			tile.draw(ctx);
+			tile.unTransform(ctx);
+		}
+	}
+	this.drawChildren(ctx);
+}
+
+var lvl = new Level(10,10,16);
+world.addChild(lvl);*/
+
+
+
+
+
+
+
+
+
+
+
+
+
