@@ -21,12 +21,20 @@ sHead.prevY = sHead.y;
 sHead.direction= "right";
 sHead.image = Textures.load("http://people.ucsc.edu/~tmcqueen/Sprites/sHead.png");
 
+var food = new Sprite();
+food.height = tileSize;
+food.width = tileSize;
+food.x;
+food.y;
+food.image = Textures.load("http://people.ucsc.edu/~tmcqueen/Sprites/food.png");
+
 function makeSnake(){
 	sHead.x = 400;
 	sHead.y = 300;
 	sHead.PrevX = sHead.x;
 	sHead.PrevY = sHead.y;
 	sHead.direction= "right";
+	food.x = Math.random()
 	var length = 3;
 	snake.push(sHead);
 	for (var i = 1; i<length;i++){
@@ -73,6 +81,17 @@ function updateS(){
 
 
 function updateGame(){
+	if (sHead.x == w || s.Head.x == 0 || sHead.y == h || sHead.y == 0){
+		clearInterval(go);
+		var gameO = new Sprite();
+		gameO.width = 800;
+		gameO.height = 600;
+		gameO.x = 0;
+		gameO.y = 0;
+		gameO.image = Textures.load("http://vignette4.wikia.nocookie.net/pekkalevelfour/images/4/4c/Game_over_screen_minebot.png/revision/latest/scale-to-width/800?cb=20140530065824");
+		world.addChild(gameO);
+		
+	}
 	if (gInput.left && (sHead.direction != "right")){
 		sHead.direction = "left";
 	}
