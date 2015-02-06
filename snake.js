@@ -10,13 +10,18 @@ var food = textures.load("http://people.ucsc.edu/~tmcqueen/Sprites/food.png");
 var cols = 10;
 var rows = 10;
 var tilesType = [];
+tileType.push("http://people.ucsc.edu/~tmcqueen/Sprites/Grid.png");
 
-function Grid(pic){
-	this.pic = Textures.load(pic);
+function Grid(texture){
+	this.texture = Textures.load(texture);
+	
 }
 
-function Lvl(){
+//got this from the grid example with Brine
+//it should create the level
+function Lvl(cols,rows,tileSize){
 	Sprite.call(this);
+	this.image = Textures.load(tileType[0]);
 	this.cols = cols;
 	this.rows = rows;
 	
@@ -30,5 +35,10 @@ function Lvl(){
 			this.tiles[i][j] = new Grid(tileTypes[0]);
 		}//second for loop
 	}//first for loop
-	
+}
+
+Lvl.prototype = new Sprite();
+
+Lvl.prototype.update = function(d){
+	this.updateChildren(d);
 }
