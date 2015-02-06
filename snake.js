@@ -1,5 +1,4 @@
 use2D = true;
-initGame("canvas");
 
 //const variables that don't change;
 var tileSize = 16;
