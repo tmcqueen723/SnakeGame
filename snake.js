@@ -6,10 +6,10 @@ var w = 800;
 var h = 600;
 var go;
 
-gInput.addBool(37, "left");
-gInput.addBool(38, "up");
-gInput.addBool(39, "right");
-gInput.addBool(40, "down");
+gInput.addBool(65, "left");
+gInput.addBool(87, "up");
+gInput.addBool(68, "right");
+gInput.addBool(83, "down");
 var snake = new List();
 var sHead = new Sprite();
 sHead.height = tileSize;
@@ -27,9 +27,9 @@ function makeSnake(){
 	sHead.PrevX = sHead.x;
 	sHead.PrevY = sHead.y;
 	sHead.direction= "right";
-	var startLength = 3;
+	var length = 3;
 	snake.push(sHead);
-	for (var i = 1; i<startLength;i++){
+	for (var i = 1; i<length;i++){
 		var sBody = new Sprite();
 		sBody.height = tileSize;
 		sBody.width = tileSize;
@@ -40,27 +40,33 @@ function makeSnake(){
 		sBody.image = Textures.load("http://people.ucsc.edu/~tmcqueen/Sprites/sBody.png");
 		snake.push(sBody);
 	}
-	for (var j = 0; j < snake.startLength; j++){
+	for (var j=0; j<snake.length; j++){
 		world.addChild(snake.getAt(j));
 	}
+	go.setInterval(updateGame, 60);
 }
 
 function updateS(){
 	for (var i = 1; i<snake.length; i++){
-		snake.getAt(i).prevX = sList.getAt(i).x;
-		snake.getAt(i).prevY = sList.getAt(i).y;
-		if (sHead.direction = "left"){
-			sList.getAt(i).x = (sList.getAt(i-1).prevX+2);
-			sList.getAt(i).y = (sList.getAt(i-1).prevY);
-		}else if (sHead.direction = "up"){
-			sList.getAt(i).x = (sList.getAt(i-1).prevX);
-			sList.getAt(i).y = (sList.getAt(i-1).prevY+2);
-		}else if (sHead.direction = "right"){
-			sList.getAt(i).x = (sList.getAt(i-1).prevX-2);
-			sList.getAt(i).y = (sList.getAt(i-1).prevY);
-		}else if (sHead.direction = "down"){
-			sList.getAt(i).x = (sList.getAt(i-1).prevX);
-			sList.getAt(i).y = (sList.getAt(i-1).prevY-2);
+		snake.getAt(i).prevX = snake.getAt(i).x;
+		snake.getAt(i).prevY = snake.getAt(i).y;
+		switch(sHead.direction){
+			case "left":
+				snake.getAt(i).x = (snake.getAt(i-1).prevX+2);
+				snake.getAt(i).y = (snake.getAt(i-1).prevY);
+				break;
+			case "up":
+				snake.getAt(i).x = (snake.getAt(i-1).prevX);
+				snake.getAt(i).y = (snake.getAt(i-1).prevY+2);
+				break;
+			case "right":
+				snake.getAt(i).x = (snake.getAt(i-1).prevX-2);
+				snake.getAt(i).y = (snake.getAt(i-1).prevY);
+				break;
+			case "down":
+				snake.getAt(i).x = (snake.getAt(i-1).prevX);
+				snake.getAt(i).y = (snake.getAt(i-1).prevY-2);
+				break;
 		}
 	}
 }
@@ -81,17 +87,19 @@ function updateGame(){
 	}
 	sHead.prevX = sHead.x;
 	sHead.prevY = sHead.y;
-	if (sHead.direction = "left"){
-		sHead.x -= tileSize;
-	}
-	if (sHead.direction = "up"){
-		sHead.y -= tileSize;
-	}
-	if (sHead.direction = "right"){
-		sHead.x += tileSize;
-	}
-	if (sHead.direction = "down"){
-		sHead.y += tileSize;
+	switch(sHead.direction){
+		case "left":
+			sHead.x -= tileSize;
+			break;
+		case "up":
+			sHead.y -= tileSize;
+			break;
+		case "right":
+			sHead.x += tileSize;
+			break;
+		case "down":	
+			sHead.y += tileSize;
+			break;
 	}
 	updateS();
 }
