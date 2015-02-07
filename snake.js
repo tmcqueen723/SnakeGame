@@ -6,6 +6,12 @@ var w = 600;
 var h = 600;
 var go;
 
+var Score;
+var scoreText = new TextBox();
+scoreText.x = 10;
+scoreText.y = 10;
+world.addChild(scoreText);
+
 gInput.addBool(65, "left");
 gInput.addBool(87, "up");
 gInput.addBool(68, "right");
@@ -47,6 +53,7 @@ function makeSnake(){
 	food.y = (Math.floor(Math.random()*(w/tileSize)))*tileSize;
 	var length = 3;
 	snake.push(sHead);
+	score = 0;
 	for (var i = 1; i<length;i++){
 		var sBody = new Sprite();
 		sBody.height = tileSize;
@@ -133,6 +140,7 @@ function updateGame(){
 		world.addChild(mine);
 		mine.x = (Math.floor(Math.random()*(w/tileSize)))*tileSize;
 		mine.y = (Math.floor(Math.random()*(w/tileSize)))*tileSize; 
+		score++;
 	}
 	
 	
@@ -178,6 +186,7 @@ function updateGame(){
 			break;
 	}
 	updateS();
+	scoreText.text = "Score: "+ score;
 }
 makeSnake();
 
