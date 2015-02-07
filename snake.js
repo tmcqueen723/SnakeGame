@@ -51,7 +51,7 @@ function makeSnake(){
 	sHead.direction= "right";
 	food.x = (Math.floor(Math.random()*(w/tileSize)))*tileSize;
 	food.y = (Math.floor(Math.random()*(w/tileSize)))*tileSize;
-	var length = 3;
+	var length = 10;
 	snake.push(sHead);
 	score = 0;
 	for (var i = 1; i<length;i++){
@@ -97,6 +97,13 @@ function updateS(){
 	}
 }
 
+function selfCannibal(List){
+	for (var i = 1; i < List.length; i++){
+		if (List.getAt(0).x == List.getAt(i).x && List.getAt(0).y == List.getAt(i).y)
+		return true;
+	}
+	return false;
+}
 
 function updateGame(){
 	//if you hit a wall Game Over
@@ -110,6 +117,20 @@ function updateGame(){
 		gameO.image = Textures.load("http://people.ucsc.edu/~tmcqueen/Sprites/GameOver.png");
 		world.addChild(gameO);		
 	}
+	
+	//check to see if the snake is a cannibal
+	if (selfCannibal(snake)){
+		clearInterval(go);
+		var gameO = new Sprite();
+		gameO.width = 600;
+		gameO.height = 600;
+		gameO.x = 0;
+		gameO.y = 0;
+		gameO.image = Textures.load("http://people.ucsc.edu/~tmcqueen/Sprites/GameOver.png");
+		world.addChild(gameO);
+	}
+	
+	
 	//add to the snake when he "eats" food and add
 	//a new food to the world, as well as a mine
 	if (sHead.x == food.x && sHead.y == food.y){
