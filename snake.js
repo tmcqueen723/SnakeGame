@@ -1,8 +1,8 @@
 use2D = true;
 
 //const variables that don't change;
-var tileSize = 16;
-var w = 800;
+var tileSize = 10;
+var w = 600;
 var h = 600;
 var go;
 
@@ -14,8 +14,8 @@ var snake = new List();
 var sHead = new Sprite();
 sHead.height = tileSize;
 sHead.width = tileSize;
-sHead.x = 400;
-sHead.y = 300;
+sHead.x = 300;
+sHead.y = 200;
 sHead.prevX = sHead.x;
 sHead.prevY = sHead.y;
 sHead.direction= "right";
@@ -29,7 +29,15 @@ food.y;
 food.image = Textures.load("http://people.ucsc.edu/~tmcqueen/Sprites/food.png");
 world.addChild(food);
 
+var mine = new Sprite();
+mine.height = tileSize;
+mine.width = tileSize;
+mine.x;
+mine.y;
+mine.image = Textures.load("http://people.ucsc.edu/~tmcqueen/Sprites/Mine.png");
+
 function makeSnake(){
+	//makes the inital snake 
 	sHead.x = 400;
 	sHead.y = 300;
 	sHead.PrevX = sHead.x;
@@ -37,7 +45,6 @@ function makeSnake(){
 	sHead.direction= "right";
 	food.x = (Math.floor(Math.random()*(w/tileSize)))*tileSize;
 	food.y = (Math.floor(Math.random()*(w/tileSize)))*tileSize;
-	console.log(food.x, food.y);
 	var length = 3;
 	snake.push(sHead);
 	for (var i = 1; i<length;i++){
@@ -58,6 +65,7 @@ function makeSnake(){
 }
 
 function updateS(){
+	//allows for the snake to move
 	for (var i = 1; i<snake.length; i++){
 		snake.getAt(i).prevX = snake.getAt(i).x;
 		snake.getAt(i).prevY = snake.getAt(i).y;
@@ -84,17 +92,19 @@ function updateS(){
 
 
 function updateGame(){
+	//if you hit a wall Game Over
 	if (sHead.x == w || sHead.x == 0 || sHead.y >= h || sHead.y <= 0){
 		clearInterval(go);
 		var gameO = new Sprite();
-		gameO.width = 800;
+		gameO.width = 600;
 		gameO.height = 600;
 		gameO.x = 0;
 		gameO.y = 0;
-		gameO.image = Textures.load("http://vignette4.wikia.nocookie.net/pekkalevelfour/images/4/4c/Game_over_screen_minebot.png/revision/latest/scale-to-width/800?cb=20140530065824");
+		gameO.image = Textures.load("http://people.ucsc.edu/~tmcqueen/Sprites/GameOver.png");
 		world.addChild(gameO);		
 	}
-	
+	//add to the snake when he "eats" food and add
+	//a new food to the world, as well as a mine
 	if (sHead.x == food.x && sHead.y == food.y){
 		var nsnake = new Sprite();
 		nsnake.height = tileSize;
@@ -120,10 +130,25 @@ function updateGame(){
 		world.addChild(snake.getAt(snake.length-1));
 		food.x = (Math.floor(Math.random()*(w/tileSize)))*tileSize;
 		food.y = (Math.floor(Math.random()*(w/tileSize)))*tileSize;
-		 
+		world.addChild(mine);
+		mine.x = (Math.floor(Math.random()*(w/tileSize)))*tileSize;
+		mine.y = (Math.floor(Math.random()*(w/tileSize)))*tileSize; 
 	}
 	
 	
+	//end the game if the snake collides with a mine
+	if (sHead.x == mine.x && sHead.y == mine.y){
+		clearInterval(go);
+		var gameO = new Sprite();
+		gameO.width = 600;
+		gameO.height = 600;
+		gameO.x = 0;
+		gameO.y = 0;
+		gameO.image = Textures.load("http://people.ucsc.edu/~tmcqueen/Sprites/GameOver.png");
+		world.addChild(gameO);
+	}
+	
+	//changes the direction of the snake based on input
 	if (gInput.left && (sHead.direction != "right")){
 		sHead.direction = "left";
 	}
