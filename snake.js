@@ -27,6 +27,7 @@ food.width = tileSize;
 food.x;
 food.y;
 food.image = Textures.load("http://people.ucsc.edu/~tmcqueen/Sprites/food.png");
+world.addChild(food);
 
 function makeSnake(){
 	sHead.x = 400;
@@ -34,7 +35,9 @@ function makeSnake(){
 	sHead.PrevX = sHead.x;
 	sHead.PrevY = sHead.y;
 	sHead.direction= "right";
-	food.x = Math.random()
+	food.x = (Math.floor(Math.random()*(w/tileSize)))*tileSize;
+	food.y = (Math.floor(Math.random()*(w/tileSize)))*tileSize;
+	console.log(food.x, food.y);
 	var length = 3;
 	snake.push(sHead);
 	for (var i = 1; i<length;i++){
@@ -81,7 +84,7 @@ function updateS(){
 
 
 function updateGame(){
-	if (sHead.x == w || s.Head.x == 0 || sHead.y == h || sHead.y == 0){
+	if (sHead.x == w || sHead.x == 0 || sHead.y >= h || sHead.y <= 0){
 		clearInterval(go);
 		var gameO = new Sprite();
 		gameO.width = 800;
@@ -89,9 +92,38 @@ function updateGame(){
 		gameO.x = 0;
 		gameO.y = 0;
 		gameO.image = Textures.load("http://vignette4.wikia.nocookie.net/pekkalevelfour/images/4/4c/Game_over_screen_minebot.png/revision/latest/scale-to-width/800?cb=20140530065824");
-		world.addChild(gameO);
-		
+		world.addChild(gameO);		
 	}
+	
+	if (sHead.x == food.x && sHead.y == food.y){
+		var nsnake = new Sprite();
+		nsnake.height = tileSize;
+		nsnake.width = tileSize;
+		switch (sHead.direction){
+			case "left":
+				nsnake.x = (snake.getAt(snake.length-1).x + (tileSize+2));
+				nsnake.y = (snake.getAt(snake.length-1).y);
+			case "right":
+				nsnake.x = (snake.getAt(snake.length-1).x - (tileSize+2));
+				nsnake.y = (snake.getAt(snake.length-1).y);
+			case "up":
+				nsnake.x = (snake.getAt(snake.length-1).x);
+				nsnake.y = (snake.getAt(snake.length-1).y + (tileSize+2));
+			case "down":
+				nsnake.x = (snake.getAt(snake.length-1).x);
+				nsnake.y = (snake.getAt(snake.length-1).y +(tileSize-2));
+		}
+		nsnake.prevX = nsnake.x;
+		nsnake.prevY = nsnake.y;
+		nsnake.image = Textures.load("http://people.ucsc.edu/~tmcqueen/Sprites/sBody.png");
+		snake.push_back(nsnake);
+		world.addChild(snake.getAt(snake.length-1));
+		food.x = (Math.floor(Math.random()*(w/tileSize)))*tileSize;
+		food.y = (Math.floor(Math.random()*(w/tileSize)))*tileSize;
+		 
+	}
+	
+	
 	if (gInput.left && (sHead.direction != "right")){
 		sHead.direction = "left";
 	}
